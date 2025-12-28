@@ -83,17 +83,24 @@ O pipeline completo desenvolvido em **3 etapas principais**:
 - **GitHub**: [liakruk](https://github.com/liakruk)
 - **Linkedin**: [liakruk](https://www.linkedin.com/in/liakruk/)
 
+## 🚀 Roadmap e Melhorias Futuras
 
-### ⚡ Sugestões/Feedback e Melhorias
+Este projeto está em evolução contínua. Abaixo estão as melhorias planejadas com base em feedbacks da comunidade e estudos de aprofundamento técnico.
 
-- [x] README inspirado no fork do [@faelp22](https://github.com/faelp22)
-- [ ] "Expor o modelo via API (FastAPI ou Flask) = Desacopla e facilita integrações futuras com sistemas mais robustos ou outros serviços."
-- [ ] "Criação de Frontend: HTML/CSS/JS consumindo a API. Em uma interface própria eleva o nível da apresentação e disposição das informações."
-- [ ] "Usar um LLM via API com free tier (Grok)"
-- [ ] "Deploy da solução no Vercel ou Render
-- [ ] Expor estatísticas padrão para dar contexto ao LLM (curtose, média, mediana, resultados de testes de aderência de distribuição...)
-- [ ] Testar modelo local qwen2.5:3b para testes
-- [ ] Função assíncrona para enviar o relatório de sugestão via API para wpp ou smtp para e-mail
-- [ ] Sugerir automaticamente o melhor (ou quase) threshold, derivado da relação T = Custo/Lucro + Custo
-- [ ] Threshold dinâmico individualizado por cliente em relação ao custo específico
+### 🏗️ Arquitetura & Engenharia
+- [ ] **API First:** Expor o modelo via **FastAPI** para desacoplar o backend e facilitar integrações futuras.
+- [ ] **Frontend Dedicado:** Desenvolvimento de interface própria (HTML/CSS/JS) consumindo a API para melhorar a UX.
+- [ ] **Notificações Assíncronas:** Implementar envio de relatórios via WhatsApp ou E-mail (SMTP) em background tasks.
 
+### 🧠 Data Science & IA Generativa
+- [ ] **Otimização de Threshold:** Implementar lógica de threshold dinâmico (Relação Lucro vs. Custo do Falso Positivo).
+- [ ] **Contexto Estatístico para LLM:** Enriquecer o prompt com métricas de distribuição (curtose, média, percentis) para reduzir alucinações.
+- [ ] **Integração de LLM via API:** Migrar para modelos via API com free tier (ex: Groq/Llama 3) para produção.
+- [ ] **Testes Locais:** Experimentar modelos leves (ex: Qwen 2.5 3B) para inferência local.
+
+### ☁️ DevOps & Infraestrutura
+- [ ] **Deploy em Nuvem:** Publicação da solução usando serviços como **Render** (Backend) e **Vercel** (Frontend).
+
+---
+
+*README inspirado no fork do [@faelp22](https://github.com/faelp22)*
