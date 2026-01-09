@@ -27,6 +27,7 @@ CreditCard_Risk/
 ├── UCI_Credit_Card.csv     # Banco de dados utilizado
 ├── app.py                  # Aplicação web (Streamlit)
 ├── credit_EDA.ipynb        # [Extra] EDA - Análise Exploratória de Dados
+├── credit_model.py         # Modelo ML
 ├── explain.py              # Cálculo de explicabilidade (SHAP)
 ├── llm.py                  # Integração com LLM (Ollama)
 ├── prompts.py              # Engenharia de prompt
