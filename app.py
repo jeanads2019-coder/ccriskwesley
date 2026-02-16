@@ -44,8 +44,13 @@ df = None
 
 if data_source == "CSV Upload":
     file = st.sidebar.file_uploader("Arraste seu CSV de Teste aqui", type="csv")
-    if df is not None:
+    if file:
         df = pd.read_csv(file)
+        # Ensure ID column is handled
+        if "ID" in df.columns:
+            df.set_index("ID", inplace=True) 
+            # Resetting to keep ID available if needed for display but using default index for selection logic
+            df.reset_index(inplace=True)
         st.subheader("Dados carregados (CSV)")
         st.dataframe(df.head())
 
