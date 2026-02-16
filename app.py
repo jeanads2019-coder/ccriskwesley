@@ -36,16 +36,50 @@ st.title("💳 Sistema de Decisão de Crédito")
 st.markdown(""" Carregue seu arquivo CSV, ajuste o limiar de decisão,  
 e receba **explicações claras** e **orientação de soluções** de crédito por um LLM local.""")
 
-st.sidebar.header("1. Upload de Arquivos")
-file = st.sidebar.file_uploader("Arraste seu CSV de Teste aqui", type="csv")
+st.sidebar.header("1. Upload de Arquivos / Conexão")
 
+data_source = st.sidebar.radio("Fonte de Dados", ["CSV Upload", "Supabase Database"], index=0)
 
+df = None
 
-if file:
-    df = pd.read_csv(file)
+if data_source == "CSV Upload":
+    file = st.sidebar.file_uploader("Arraste seu CSV de Teste aqui", type="csv")
+    if df is not None:
+        df = pd.read_csv(file)
+        st.subheader("Dados carregados (CSV)")
+        st.dataframe(df.head())
 
-    st.subheader("Dados carregados")
-    st.dataframe(df.head())
+else:
+    # Supabase Connection
+    from sqlalchemy import create_engine, text
+    import os
+    from dotenv import load_dotenv
+    load_dotenv()
+    
+    db_url = os.getenv("DIRECT_URL") or os.getenv("DATABASE_URL")
+    
+    if st.sidebar.button("Carregar do Supabase"):
+        if not db_url:
+            st.error("DATABASE_URL não configurada no .env")
+        else:
+            try:
+                with st.spinner("Baixando dados do Supabase..."):
+                    engine = create_engine(db_url)
+                    query = "SELECT * FROM credit_clients LIMIT 500" # Limiting for demo perf
+                    df = pd.read_sql(query, engine)
+                    
+                    # Rename back to CSV format expected by model
+                    if "default_payment_next_month" in df.columns:
+                        df.rename(columns={"default_payment_next_month": "default.payment.next.month"}, inplace=True)
+                        
+                    st.subheader("Dados carregados (Supabase - Top 500)")
+                    st.dataframe(df.head())
+            except Exception as e:
+                st.error(f"Erro ao conectar: {e}")
+
+if df is not None:
+    # Remove processamento duplicado abaixo e garante fluxo único
+    pass
 
     st.sidebar.markdown("---")
     st.sidebar.header("2. Parâmetros de Negócio")
