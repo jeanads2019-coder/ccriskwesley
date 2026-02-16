@@ -1,0 +1,7 @@
+__pycache__/
+*.pyc
+*.pkl
+clientes_com_score.csv
+.DS_Store
+.env
+.venv

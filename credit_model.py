@@ -19,9 +19,12 @@ cols_pay = [col for col in df.columns if 'PAY_' in col and 'AMT' not in col]
 todas_categorias = cols_nominais + cols_pay
 
 for col in todas_categorias:
-    df[col] = df[col].astype('category')
+    if col in df.columns:
+        df[col] = df[col].astype('category')
 
-#print(df.info())
+# Separate features (X) and target (y) BEFORE preprocessing
+X = df.drop(columns=['ID', 'default.payment.next.month'], errors='ignore')
+y = df['default.payment.next.month'].astype(int)
 
 categorical_features = ['SEX', 'EDUCATION', 'MARRIAGE']
 preprocessor = ColumnTransformer(
@@ -30,17 +33,15 @@ preprocessor = ColumnTransformer(
     verbose_feature_names_out=False
 )
 
-df_processed_array = preprocessor.fit_transform(df)
+# Fit on X only (without ID or target)
+X_processed_array = preprocessor.fit_transform(X)
 new_columns = preprocessor.get_feature_names_out()
-df_final = pd.DataFrame(df_processed_array, columns=new_columns)
+X_final = pd.DataFrame(X_processed_array, columns=new_columns)
 
-df_final.to_csv('clientes_com_score.csv', index=False)
+df_final = X_final.copy() # Compatible with existing code structure if needed
+# df_final.to_csv('clientes_com_score.csv', index=False) # Optional
 
-
-
-X = df_final.drop('default.payment.next.month', axis=1)
-y = df_final['default.payment.next.month'].astype(int)
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.30, random_state=42, stratify=y)
+X_train, X_test, y_train, y_test = train_test_split(X_final, y, test_size=0.30, random_state=42, stratify=y)
 
 print(f"Treinando com {X_train.shape[0]} clientes e testando com {X_test.shape[0]} clientes.")
 
@@ -60,7 +61,8 @@ plt.figure(figsize=(8, 6))
 
 ConfusionMatrixDisplay.from_estimator(rf_model, X_test, y_test, cmap='Blues', values_format='d')
 plt.title('Matriz de Confusão (Random Forest)')
-plt.show()
+# plt.show()
+plt.close()
 
 print("\nRelatório de Classificação:\n")
 print(classification_report(y_test, y_pred))

@@ -5,3 +5,6 @@ scikit-learn
 joblib
 shap
 requests
+matplotlib
+seaborn
+plotly
